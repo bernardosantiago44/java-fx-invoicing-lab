@@ -14,11 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -28,6 +24,9 @@ import java.util.Objects;
 
 public class InvoiceHistoryController {
 
+    public Button backToMainButton;
+    public Button clearFilterButton;
+    public Button filterButton;
     @FXML
     private DatePicker fromDatePicker;
 
@@ -124,7 +123,7 @@ public class InvoiceHistoryController {
     private void handleClearFilter() {
         fromDatePicker.setValue(null);
         toDatePicker.setValue(null);
-        filteredInvoices.setPredicate(invoice -> true);
+        filteredInvoices.setPredicate((_) -> true);
         invoicesTableView.getSelectionModel().clearSelection();
         clearDetails();
     }
@@ -139,7 +138,7 @@ public class InvoiceHistoryController {
     }
 
     private void configureInvoicesTable() {
-        filteredInvoices = new FilteredList<>(invoiceService.getInvoices(), invoice -> true);
+        filteredInvoices = new FilteredList<>(invoiceService.getInvoices(), (_) -> true);
         invoicesTableView.setItems(filteredInvoices);
 
         invoiceNumberColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getInvoiceNumber()));
@@ -153,12 +152,12 @@ public class InvoiceHistoryController {
     private void configureDetailItemsTable() {
         detailItemsTableView.setItems(detailItems);
         detailProductColumn.setCellValueFactory(data -> new SimpleStringProperty(formatProduct(data.getValue())));
-        detailQuantityColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getQuantity())));
+        detailQuantityColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().quantity())));
         detailLineTotalColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(calculateLineTotal(data.getValue()))));
     }
 
     private void configureSelection() {
-        invoicesTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldInvoice, selectedInvoice) -> {
+        invoicesTableView.getSelectionModel().selectedItemProperty().addListener((_, _, selectedInvoice) -> {
             if (selectedInvoice == null) {
                 clearDetails();
                 return;
@@ -169,9 +168,9 @@ public class InvoiceHistoryController {
     }
 
     private void showInvoiceDetails(Invoice invoice) {
-        double subtotal = invoiceService.calculateSubtotal(invoice.getItems());
-        double tax = invoiceService.calculateTax(subtotal);
-        double total = invoiceService.calculateTotal(subtotal, tax);
+        double subtotal = invoice.calculateSubtotal();
+        double tax = invoice.calculateTax();
+        double total = invoice.calculateTotal();
 
         detailInvoiceNumberLabel.setText(valueOrDash(invoice.getInvoiceNumber()));
         detailCustomerLabel.setText(formatCustomer(invoice.getCustomer()));
@@ -213,15 +212,11 @@ public class InvoiceHistoryController {
     }
 
     private double calculateTotal(Invoice invoice) {
-        double subtotal = invoiceService.calculateSubtotal(invoice.getItems());
-        double tax = invoiceService.calculateTax(subtotal);
-        return invoiceService.calculateTotal(subtotal, tax);
+        return invoice.calculateTotal();
     }
 
     private double calculateLineTotal(InvoiceItem item) {
-        double subtotal = item.calculateSubtotal();
-        double tax = invoiceService.calculateTax(subtotal);
-        return invoiceService.calculateTotal(subtotal, tax);
+        return item.calculateTotal();
     }
 
     private String formatCustomer(Customer customer) {
@@ -229,7 +224,7 @@ public class InvoiceHistoryController {
     }
 
     private String formatProduct(InvoiceItem item) {
-        return item == null || item.getProduct() == null ? "-" : item.getProduct().getName();
+        return item == null || item.product() == null ? "-" : item.product().name();
     }
 
     private String formatStatus(Invoice invoice) {

@@ -107,28 +107,32 @@ public class Invoice {
         return subtotal;
     }
     
+    public Double calculateTax() {
+        return calculateSubtotal() * Constants.TAX_RATE;
+    }
+    
     public Double calculateTotal() {
         return calculateSubtotal() * (1 + Constants.TAX_RATE);
     }
     
-    public boolean isValid() {
+    public boolean isInvalid() {
         if (this.getInvoiceNumber() == null || this.getInvoiceNumber().isBlank()) {
-            return false;
+            return true;
         }
 
         if (this.getIssueDate() == null || this.getDueDate() == null) {
-            return false;
+            return true;
         }
 
         if (this.getDueDate().isBefore(this.getIssueDate())) {
-            return false;
+            return true;
         }
 
         if (this.getCustomer() == null || this.getStatus() == null) {
-            return false;
+            return true;
         }
 
-        return this.areValidInvoiceItems(this.getItems());
+        return !this.areValidInvoiceItems(this.getItems());
     }
     
     private boolean areValidInvoiceItems(List<InvoiceItem> items) {

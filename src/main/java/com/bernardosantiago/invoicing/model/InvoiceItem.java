@@ -1,31 +1,26 @@
 package com.bernardosantiago.invoicing.model;
 
-public class InvoiceItem {
-    private final Product product;
-    private final int quantity;
-    
-    public InvoiceItem(Product product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
-    }
+import com.bernardosantiago.invoicing.config.Constants;
 
-    public Product getProduct() {
-        return product;
-    }
+public record InvoiceItem(Product product, int quantity) {
 
-    public int getQuantity() {
-        return quantity;
-    }
-    
     public Double calculateSubtotal() {
-        return this.product.getUnitPrice() * this.quantity;
+        return this.product.unitPrice() * this.quantity;
     }
     
+    public Double calculateTax() {
+        return this.product.unitPrice() * this.quantity * Constants.TAX_RATE;
+    }
+    
+    public double calculateTotal() {
+        return calculateSubtotal() + calculateTax();
+    }
+
     public boolean isValid() {
-        Product product = this.getProduct();
+        Product product = this.product();
         return product != null
-                && product.getUnitPrice() != null
-                && product.getUnitPrice() >= 0
+                && product.unitPrice() != null
+                && product.unitPrice() >= 0
                 && this.quantity > 0;
     }
 }

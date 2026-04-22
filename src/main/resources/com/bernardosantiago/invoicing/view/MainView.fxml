@@ -116,7 +116,7 @@
             <TableView fx:id="lineItemsTableView" prefHeight="250" VBox.vgrow="ALWAYS" styleClass="line-items-table">
               <columns>
                 <TableColumn fx:id="productColumn" text="Product" prefWidth="260"/>
-                <TableColumn fx:id="quantityColumn" text="Qty" prefWidth="80"/>
+                <TableColumn fx:id="quantityColumn" text="Qty"/>
                 <TableColumn fx:id="unitPriceColumn" text="Unit Price" prefWidth="120"/>
                 <TableColumn fx:id="lineTaxColumn" text="Tax" prefWidth="100"/>
                 <TableColumn fx:id="lineTotalColumn" text="Line Total" prefWidth="130"/>
@@ -162,6 +162,6 @@
   </bottom>
 
   <padding>
-    <Insets top="0" right="0" bottom="0" left="0"/>
+    <Insets/>
   </padding>
 </BorderPane>

@@ -22,7 +22,7 @@ public class ProductService {
     public void addProduct(Product product) {
         validateProduct(product);
 
-        if (findProductBySku(product.getSku()) != null) {
+        if (findProductBySku(product.sku()) != null) {
             throw new IllegalArgumentException("Product SKU already exists.");
         }
 
@@ -39,9 +39,9 @@ public class ProductService {
             throw new IllegalArgumentException("Product with SKU " + normalizedCurrentSku + " was not found.");
         }
 
-        Product existingProductWithUpdatedSku = findProductBySku(updatedProduct.getSku());
+        Product existingProductWithUpdatedSku = findProductBySku(updatedProduct.sku());
         if (existingProductWithUpdatedSku != null
-                && !existingProductWithUpdatedSku.getSku().equalsIgnoreCase(normalizedCurrentSku)) {
+                && !existingProductWithUpdatedSku.sku().equalsIgnoreCase(normalizedCurrentSku)) {
             throw new IllegalArgumentException("Product SKU already exists.");
         }
 
@@ -51,7 +51,7 @@ public class ProductService {
 
     public Product updateProduct(Product updatedProduct) {
         validateProduct(updatedProduct);
-        return updateProduct(updatedProduct.getSku(), updatedProduct);
+        return updateProduct(updatedProduct.sku(), updatedProduct);
     }
     
     /**
@@ -65,14 +65,14 @@ public class ProductService {
 
         String normalizedSku = sku.trim();
         for (Product product : products) {
-            if (product.getSku().equalsIgnoreCase(normalizedSku)) return product;
+            if (product.sku().equalsIgnoreCase(normalizedSku)) return product;
         }
         return null;
     }
 
     private int findProductIndexBySku(String sku) {
         for (int index = 0; index < products.size(); index++) {
-            if (products.get(index).getSku().equalsIgnoreCase(sku)) {
+            if (products.get(index).sku().equalsIgnoreCase(sku)) {
                 return index;
             }
         }
@@ -98,10 +98,10 @@ public class ProductService {
             throw new IllegalArgumentException("Product is required.");
         }
 
-        validateRequired(product.getName(), "Product name");
-        validateRequired(product.getSku(), "Product SKU");
+        validateRequired(product.name(), "Product name");
+        validateRequired(product.sku(), "Product SKU");
 
-        if (product.getUnitPrice() == null || product.getUnitPrice() < 0) {
+        if (product.unitPrice() == null || product.unitPrice() < 0) {
             throw new IllegalArgumentException("Product unit price must be zero or greater.");
         }
     }

@@ -30,6 +30,12 @@ import java.util.Objects;
 
 public class MainViewController {
 
+    public Button newProductButton;
+    public Button addItemButton;
+    public Button openHistoryButton;
+    public Button resetFormButton;
+    public Button saveDraftButton;
+    public Button generateInvoiceButton;
     @FXML
     private ComboBox<Customer> customerComboBox;
 
@@ -170,7 +176,7 @@ public class MainViewController {
             }
         });
 
-        customerComboBox.valueProperty().addListener((observable, oldCustomer, selectedCustomer) -> {
+        customerComboBox.valueProperty().addListener((_, _, selectedCustomer) -> {
             currentInvoice.setCustomer(selectedCustomer);
             if (selectedCustomer == null) {
                 taxIdField.clear();
@@ -192,7 +198,7 @@ public class MainViewController {
                     return "";
                 }
 
-                return product.getName() + " (" + product.getSku() + ")";
+                return product.name() + " (" + product.sku() + ")";
             }
 
             @Override
@@ -206,9 +212,9 @@ public class MainViewController {
         lineItemsTableView.setItems(lineItems);
         lineItemsTableView.setEditable(true);
 
-        productColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getProduct().getName()));
-        quantityColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getQuantity())));
-        unitPriceColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().getProduct().getUnitPrice())));
+        productColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().product().name()));
+        quantityColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().quantity())));
+        unitPriceColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().product().unitPrice())));
         lineTaxColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(calculateItemTax(data.getValue()))));
         lineTotalColumn.setCellValueFactory(data -> new SimpleStringProperty(formatCurrency(data.getValue().calculateSubtotal() + calculateItemTax(data.getValue()))));
 
@@ -217,8 +223,8 @@ public class MainViewController {
     }
 
     private void configureDatePickers() {
-        issueDatePicker.valueProperty().addListener((observable, oldDate, selectedDate) -> currentInvoice.setIssueDate(selectedDate));
-        dueDatePicker.valueProperty().addListener((observable, oldDate, selectedDate) -> currentInvoice.setDueDate(selectedDate));
+        issueDatePicker.valueProperty().addListener((_, _, selectedDate) -> currentInvoice.setIssueDate(selectedDate));
+        dueDatePicker.valueProperty().addListener((_, _, selectedDate) -> currentInvoice.setDueDate(selectedDate));
     }
 
     private void configureEditableQuantityColumn() {
@@ -238,7 +244,7 @@ public class MainViewController {
                 return;
             }
 
-            currentInvoice.getItems().set(itemIndex, new InvoiceItem(item.getProduct(), editedQuantity));
+            currentInvoice.getItems().set(itemIndex, new InvoiceItem(item.product(), editedQuantity));
             refreshLineItems();
             refreshTotals();
         });
@@ -251,12 +257,12 @@ public class MainViewController {
 
         removeColumn = new TableColumn<>("Action");
         removeColumn.setPrefWidth(90);
-        removeColumn.setCellFactory(column -> new TableCell<>() {
+        removeColumn.setCellFactory(_ -> new TableCell<>() {
             private final Button removeButton = new Button("Remove");
 
             {
                 removeButton.getStyleClass().add("ghost-button");
-                removeButton.setOnAction(event -> {
+                removeButton.setOnAction(_ -> {
                     InvoiceItem item = getTableView().getItems().get(getIndex());
                     invoiceService.removeItem(currentInvoice, item);
                     refreshLineItems();
@@ -328,9 +334,9 @@ public class MainViewController {
     }
 
     private void refreshTotals() {
-        double subtotal = invoiceService.calculateSubtotal(currentInvoice.getItems());
-        double tax = invoiceService.calculateTax(subtotal);
-        double total = invoiceService.calculateTotal(subtotal, tax);
+        double subtotal = currentInvoice.calculateSubtotal();
+        double tax = currentInvoice.calculateTax();
+        double total = currentInvoice.calculateTotal();
 
         subtotalLabel.setText(formatCurrency(subtotal));
         taxLabel.setText(formatCurrency(tax));
