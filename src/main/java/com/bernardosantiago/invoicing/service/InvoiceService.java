@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class InvoiceService {
-    private final ObservableList<Invoice> invoices = FXCollections.observableArrayList();
+    private static final ObservableList<Invoice> invoices = FXCollections.observableArrayList();
     
     public InvoiceService() {}
 

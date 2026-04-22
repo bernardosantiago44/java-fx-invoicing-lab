@@ -65,11 +65,11 @@
               </VBox>
 
               <VBox alignment="BOTTOM_LEFT" GridPane.columnIndex="2">
-                <Button fx:id="clearFilterButton" text="Clear" maxWidth="Infinity" styleClass="secondary-button"/>
+                <Button fx:id="clearFilterButton" text="Clear" onAction="#handleClearFilter" maxWidth="Infinity" styleClass="secondary-button"/>
               </VBox>
 
               <VBox alignment="BOTTOM_LEFT" GridPane.columnIndex="3">
-                <Button fx:id="filterButton" text="Filter" maxWidth="Infinity" styleClass="primary-button"/>
+                <Button fx:id="filterButton" text="Filter" onAction="#handleFilter" maxWidth="Infinity" styleClass="primary-button"/>
               </VBox>
             </GridPane>
 

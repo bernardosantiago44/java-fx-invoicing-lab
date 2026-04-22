@@ -11,8 +11,4 @@ public class InvoiceNumberGenerator {
     public static String Generate() {
         return "INV-" + LocalDate.now().format(DATE_FORMATTER) + "-" + String.format("%04d", COUNTER.getAndIncrement());
     }
-
-    public static String generate() {
-        return Generate();
-    }
 }
