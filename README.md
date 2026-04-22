@@ -10,7 +10,7 @@ Tram 35
 ![Models](./diagrams/Model.png)
 
 ## Service
-![Services](./diagrams/ServicesReduced.png)
+![Services](./diagrams/Service.png)
 
 ## Controller
 ![Controllers](./diagrams/Controller.png)
