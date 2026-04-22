@@ -235,3 +235,66 @@
     -fx-border-color: #dde5ef transparent transparent transparent;
     -fx-border-width: 1 0 0 0;
 }
+
+.history-split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.history-split-pane > .split-pane-divider {
+    -fx-background-color: #dce5ef;
+    -fx-padding: 0 1 0 1;
+}
+
+.filter-bar {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 8;
+    -fx-border-color: #e2e9f1;
+    -fx-border-radius: 8;
+    -fx-padding: 14;
+}
+
+.history-table {
+    -fx-min-height: 320px;
+}
+
+.detail-panel {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #dce5ef;
+    -fx-border-radius: 8;
+    -fx-padding: 18;
+    -fx-min-width: 300px;
+}
+
+.detail-grid {
+    -fx-padding: 2 0 2 0;
+}
+
+.detail-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #687384;
+}
+
+.detail-value {
+    -fx-font-weight: 700;
+    -fx-text-fill: #17202c;
+}
+
+.compact-table .column-header,
+.compact-table .filler {
+    -fx-size: 36px;
+}
+
+.compact-table .table-row-cell {
+    -fx-cell-size: 36px;
+}
+
+.product-form-panel {
+    -fx-min-width: 520px;
+}
+
+.form-action-row {
+    -fx-padding: 2 0 0 0;
+}
