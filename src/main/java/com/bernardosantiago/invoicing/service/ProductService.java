@@ -5,11 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ProductService {
-    private final ObservableList<Product> products = FXCollections.observableArrayList();
+    private static final ObservableList<Product> products = createSampleProducts();
     
-    public ProductService() {
-        addSampleProducts();
-    }
+    public ProductService() {}
     
     public ObservableList<Product> getAllProducts() {
         return FXCollections.unmodifiableObservableList(products);
@@ -82,15 +80,17 @@ public class ProductService {
         return -1;
     }
 
-    private void addSampleProducts() {
-        addProduct(new Product("Laptop Lenovo ThinkPad E14", "PROD-001", 18999.00));
-        addProduct(new Product("Monitor Dell 24 Inch", "PROD-002", 4299.00));
-        addProduct(new Product("Mechanical Keyboard", "PROD-003", 1499.00));
-        addProduct(new Product("Wireless Mouse", "PROD-004", 699.00));
-        addProduct(new Product("USB-C Docking Station", "PROD-005", 2599.00));
-        addProduct(new Product("Office Chair", "PROD-006", 3799.00));
-        addProduct(new Product("External SSD 1TB", "PROD-007", 2199.00));
-        addProduct(new Product("Webcam Full HD", "PROD-008", 999.00));
+    private static ObservableList<Product> createSampleProducts() {
+        return FXCollections.observableArrayList(
+                new Product("Laptop Lenovo ThinkPad E14", "PROD-001", 18999.00),
+                new Product("Monitor Dell 24 Inch", "PROD-002", 4299.00),
+                new Product("Mechanical Keyboard", "PROD-003", 1499.00),
+                new Product("Wireless Mouse", "PROD-004", 699.00),
+                new Product("USB-C Docking Station", "PROD-005", 2599.00),
+                new Product("Office Chair", "PROD-006", 3799.00),
+                new Product("External SSD 1TB", "PROD-007", 2199.00),
+                new Product("Webcam Full HD", "PROD-008", 999.00)
+        );
     }
 
     private void validateProduct(Product product) {

@@ -25,6 +25,7 @@
 .screen-subtitle,
 .section-note {
     -fx-text-fill: #687384;
+    -fx-font-weight: 700;
 }
 
 .invoice-number-box {
